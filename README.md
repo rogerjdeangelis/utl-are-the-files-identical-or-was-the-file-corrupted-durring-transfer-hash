@@ -1,2 +1,98 @@
 # utl-are-the-files-identical-or-was-the-file-corrupted-durring-transfer-hash
 Are the files identical or was the file corrupted durring transfer hash
+    Are the files identical or was the file corrupted durring transfer hash                                                             
+                                                                                                                                        
+    SAS 9.4M6                                                                                                                           
+                                                                                                                                        
+    There appears to be a bug in the documentation.                                                                                     
+                                                                                                                                        
+    BUG: For common ascii files you need to use the hex option?                                                                         
+                                                                                                                                        
+    github                                                                                                                              
+    https://tinyurl.com/yxmr26hv                                                                                                        
+    https://github.com/rogerjdeangelis/utl-are-the-files-identical-or-was-the-file-corrupted-durring-transfer-hash                      
+                                                                                                                                        
+    Related too                                                                                                                         
+    https://tinyurl.com/yxkn3qwy                                                                                                        
+    https://communities.sas.com/t5/SASware-Ballot-Ideas/Extending-hashing-functions-like-MD5-past-a-data-length-of-32K/idi-p/566120?nobo
+                                                                                                                                        
+    *_                   _                                                                                                              
+    (_)_ __  _ __  _   _| |_                                                                                                            
+    | | '_ \| '_ \| | | | __|                                                                                                           
+    | | | | | |_) | |_| | |_                                                                                                            
+    |_|_| |_| .__/ \__,_|\__|                                                                                                           
+            |_|                                                                                                                         
+    ;                                                                                                                                   
+                                                                                                                                        
+    d:/txt/file1.txt                                                                                                                    
+                                                                                                                                        
+    notes: every good boy deserves fudge                                                                                                
+    sql: some french women grow hairy oranges                                                                                           
+    alphabet: The quick brown fox jumps over the lazy dog                                                                               
+                                                                                                                                        
+                                                                                                                                        
+    d:/txt/file2.txt                                                                                                                    
+                                                                                                                                        
+    * NOTE 'notes:' line is different                                                                                                   
+                                                                                                                                        
+    notes: every good boy deserves fudge                                                                                                
+    sql: some french women grow hairy oranges                                                                                           
+    alphabet: The quick brown fox jumps over the lazy dog                                                                               
+                                                                                                                                        
+                                                                                                                                        
+    * create the files;                                                                                                                 
+    filename file1 "d:/txt/file1.txt" lrecl=80 recfm=f;                                                                                 
+    data _null_;                                                                                                                        
+     file file1;                                                                                                                        
+     input;                                                                                                                             
+     put _infile_ $char80.;                                                                                                             
+    cards4;                                                                                                                             
+    notes: every good boy deserves fudge                                                                                                
+    sql: some french women grow hairy oranges                                                                                           
+    alphabet: The quick brown fox jumps over the lazy dog                                                                               
+    ;;;;                                                                                                                                
+    run;quit;                                                                                                                           
+                                                                                                                                        
+                                                                                                                                        
+    * note file has 'does fine' instead of 'deserves fudge;                                                                             
+    filename file2 "d:/txt/file2.txt" lrecl=80 recfm=f;                                                                                 
+    data _null_;                                                                                                                        
+     file file2;                                                                                                                        
+     input;                                                                                                                             
+     put _infile_ $char80.;                                                                                                             
+    cards4;                                                                                                                             
+    notes: every good boy does fine,                                                                                                    
+    sql: some french women grow hairy oranges                                                                                           
+    alphabet: the quick brown fox jumps over the lazy dog                                                                               
+    ;;;;                                                                                                                                
+    run;quit;                                                                                                                           
+                                                                                                                                        
+    *                                                                                                                                   
+     _ __  _ __ ___   ___ ___  ___ ___                                                                                                  
+    | '_ \| '__/ _ \ / __/ _ \/ __/ __|                                                                                                 
+    | |_) | | | (_) | (_|  __/\__ \__ \                                                                                                 
+    | .__/|_|  \___/ \___\___||___/___/                                                                                                 
+    |_|                                                                                                                                 
+    ;                                                                                                                                   
+                                                                                                                                        
+    data _null_;                                                                                                                        
+      hash1 = hashing_file('sha256','file1',4);                                                                                         
+      hash2 = hashing_file('sha256','file2',4);                                                                                         
+      put hash1= / hash2= /;                                                                                                            
+      if hash1=hash2 then put "Files are equal  " //;                                                                                   
+      else put "Files are unequal  " //;                                                                                                
+    run;quit;                                                                                                                           
+                                                                                                                                        
+    *            _               _                                                                                                      
+      ___  _   _| |_ _ __  _   _| |_                                                                                                    
+     / _ \| | | | __| '_ \| | | | __|                                                                                                   
+    | (_) | |_| | |_| |_) | |_| | |_                                                                                                    
+     \___/ \__,_|\__| .__/ \__,_|\__|                                                                                                   
+                    |_|                                                                                                                 
+    ;                                                                                                                                   
+                                                                                                                                        
+    HASH1=723B522C1FF8D5E8D1B878F401F2ED8042567B18015CCC8845ACCA1212708116                                                              
+    HASH2=68FA52D6E11C705149A6B008DB99310A0010EBD313E33512A7DDA2ECA2ACC212                                                              
+                                                                                                                                        
+    Files are unequal                                                                                                                   
+                                                                                                                                        
